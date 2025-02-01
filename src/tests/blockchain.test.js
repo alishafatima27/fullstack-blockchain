@@ -7,6 +7,9 @@ describe('Blockchain', () => {
 
     beforeEach(() => {
         blockchain = new Blockchain();
+        newChain = new Blockchain();
+
+        originalChain = blockchain.chain;
     });
 
     it('contains a `chain` Array instance', () => {
@@ -41,6 +44,7 @@ describe('Blockchain', () => {
                 blockchain.addBlock({ data: 'Beets' });
                 blockchain.addBlock({ data: 'Battlestar Galactica' });
             })
+
             describe('and a lastHash refrence has changes', () => {
                 it('returns false', () => {
                     blockchain.chain[2].lastHash = 'broken-lastHash';
@@ -65,4 +69,44 @@ describe('Blockchain', () => {
             
         });
     });
-})
+
+    describe('replaceChain()', () => {
+        describe('when the new chain is not longer', () => {
+
+            it('does not replace the chain', () => {
+                newChain.chain[0] = { new: 'chain' };
+
+                blockchain.replaceChain(newChain.chain);
+                
+                expect(blockchain.chain).toEqual(originalChain);
+            });
+        });
+
+        describe('when the chain is longer', () => {
+            beforeEach(() => {
+                newChain.addBlock({ data: 'Bears'});
+                newChain.addBlock({ data: 'Beets' });
+                newChain.addBlock({ data: 'Battlestar Galactica'});
+            });
+
+            describe('and the chain is invalid', () => {
+                it('does not replace the chain', () => {
+
+                    newChain.chain[2].hash = 'some-fake-hash';
+
+                    blockchain.replaceChain(newChain.chain);
+
+                    expect(blockchain.chain).toEqual(originalChain);
+                });
+            });
+
+            describe('and the chain is valid', () => {
+                it('does replace the chain', () => {
+                    blockchain.replaceChain(newChain.chain);
+
+                    expect(blockchain.chain).toEqual(newChain.chain);
+                });
+            });
+        });
+    });
+});
