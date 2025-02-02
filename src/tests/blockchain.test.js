@@ -3,12 +3,13 @@ const Block = require('../block/block');
 
 
 describe('Blockchain', () => {
-    let blockchain;
+    let blockchain, newChain, originalChain;
 
     beforeEach(() => {
         blockchain = new Blockchain();
-        newChain = new Blockchain();
 
+        newChain = new Blockchain();
+       
         originalChain = blockchain.chain;
     });
 
