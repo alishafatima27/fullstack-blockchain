@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20  # Use LTS version
+          node-version: 22  # Use LTS version
           cache: 'npm'
 
       - name: Show Node.js & npm versions  # Debugging step
@@ -28,10 +28,8 @@ jobs:
           npm -v
 
       - name: Install dependencies
-        run: npm ci  # Ensures a clean environment
+        run: npm install  # Ensures a clean environment
 
-      - name: List installed dependencies  # Debugging step
-        run: npm list
 
       - name: Run Jest tests
         run: npm test -- --runInBand --verbose

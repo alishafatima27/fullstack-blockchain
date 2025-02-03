@@ -73,6 +73,7 @@ describe('Blockchain', () => {
 
     describe('replaceChain()', () => {
         let errorMock, logMock;
+        
 
         beforeEach(() => {
             errorMock = jest.fn();
